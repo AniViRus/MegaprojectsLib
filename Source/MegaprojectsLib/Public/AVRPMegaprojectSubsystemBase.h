@@ -5,12 +5,21 @@
 #include "FGInventoryComponent.h"
 #include "Subsystem/ModSubsystem.h"
 #include "FGFactoryConnectionComponent.h"
-#include "FGBuildable.h"
+#include "FGBuildableFactory.h"
+#include "FGSaveInterface.h"
 #include "AVRPBuildableMegaprojectStarter.h"
-#include "AVRPMegaprojectInterface.h"
 #include "AVRPMegaprojectSubsystemBase.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMegaprojectPhaseChanged, int, Phase);
+
+//Enum to define stage of megaproject initiation
+UENUM(BlueprintType)
+enum class EMegaprojectInitiationStage : uint8
+{
+	MIS_None		UMETA(DisplayName = "None"),
+	MIS_Unlocked	UMETA(DisplayName = "Unlocked"),
+	MIS_Initiated	UMETA(DisplayName = "Initiated")
+};
 
 //Struct for Megaproject's phase definition, used for UI and current phase definition
 USTRUCT(BlueprintType)
@@ -26,15 +35,16 @@ struct FAVRPMegaprojectPhase
  * Base class representing a specific megaproject. Has essentials for any megaproject
  */
 UCLASS(BlueprintType, Blueprintable, Abstract)
-class MEGAPROJECTSLIB_API AAVRPMegaprojectSubsystemBase : public AModSubsystem
+class MEGAPROJECTSLIB_API AAVRPMegaprojectSubsystemBase : public AModSubsystem, public IFGSaveInterface
 {
 	GENERATED_BODY()
 public:
+	friend class AAVRPBuildableMegaprojectStarter;
 	AAVRPMegaprojectSubsystemBase();
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type endPlayReason) override;
 
-	// Get current Megaproject phase, used for BeginPlay in case player unlocked all phases with cheats before initiating the project
+	// Get current Megaproject phase, used for BeginPlay in case player unlocked all phase schematics with cheats before initiating the project
 	UFUNCTION(BlueprintCallable)
 	int GetCurrentPhase();
 
@@ -42,25 +52,18 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FText GetUnlockedDescription();
 
-	// Check if Megaproject got unlocked by checking an instance of Megaproject Starter
-	UFUNCTION(BlueprintCallable)
-	FORCEINLINE bool IsUnlocked() { return mMegaprojectStarterInstance != nullptr; }
-	// Check if Megaproject has been initiated
-	UFUNCTION(BlueprintCallable)
-	FORCEINLINE bool IsInitiated() { return mMegaprojectInstance != nullptr; }
-
-	//A building to associate Megaproject with
+	//A building subclass to associate Megaproject with. Introduced just to make sure you have actually made everything required for buildable to be considered a Megaproject
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Megaproject", meta = (MustImplement = "AVRPMegaprojectInterface", BlueprintBaseOnly))
-	TSubclassOf<AFGBuildable> megaprojectBuild;
+	TSubclassOf<AFGBuildableFactory> megaprojectBuild;
 
 	UPROPERTY(BlueprintAssignable)
 	FOnMegaprojectPhaseChanged OnMegaprojectPhaseChanged;
 
-	//Megaproject phases
+	//Megaproject phases, as in the amount of times project can be upgraded after being built
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Megaproject")
 	TMap<int, FAVRPMegaprojectPhase> megaprojectPhases;
 
-	//Location of the Megaproject's starter
+	//Location of the Megaproject's initializer
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Megaproject")
 	FTransform MegaprojectStarterLocation;
 	//Location of the Megaproject building
@@ -68,17 +71,18 @@ public:
 	FTransform MegaprojectLocation;
 
 	//Items delivered to Megaproject are stored in this virtual inventory
-	UPROPERTY()
+	UPROPERTY(SaveGame)
 	UFGInventoryComponent* mMegaprojectInventory;
 protected:
+	// Since I was unable to make Unlock Subsystem work as I need, subsystems handle unlocks on their own
 	UFUNCTION()
 	void HandleSchematicPurchased(TSubclassOf<UFGSchematic> schematic);
-	UFUNCTION()
-	void SpawnMegaprojectStarter(bool displayLocation);
-	UFUNCTION()
-	void SpawnMegaproject();
-	UPROPERTY(SaveGame)
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void ResolveMegaprojectState();
+	UPROPERTY(BlueprintReadWrite)
 	AAVRPBuildableMegaprojectStarter* mMegaprojectStarterInstance;
-	UPROPERTY(SaveGame)
-	AFGBuildable* mMegaprojectInstance;
+	UPROPERTY(BlueprintReadWrite, SaveGame)
+	EMegaprojectInitiationStage mCurrentInitiationStage;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, SaveGame, Category = "Megaproject")
+	bool mCurrentDisplayLocation = false;
 };

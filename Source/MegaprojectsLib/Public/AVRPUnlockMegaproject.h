@@ -6,12 +6,12 @@
 #include "AVRPUnlockMegaproject.generated.h"
 
 /**
- * Simply an info only unlock which is responsible for enabling ability to initiate the Megaproject.
- * It basically tell the subsystem to spawn a megaproject starter
+ * Simple info only unlock which is responsible for enabling ability to initiate the Megaproject.
+ * It basically tells to update Megaproject initiation stage it's related to. 
  * 
- * displayStarterLocation is for gimmick including megaprojects (World Radar won't reveal location at first, but player can find it earlier)
+ * displayStarterLocation is for gimmick including megaprojects (World Radar's starter won't reveal location at first, but player can find it earlier)
  */
-UCLASS( Blueprintable, EditInlineNew, abstract, DefaultToInstanced )
+UCLASS( Blueprintable, EditInlineNew, Abstract, DefaultToInstanced )
 class MEGAPROJECTSLIB_API UAVRPUnlockMegaproject : public UFGUnlockInfoOnly
 {
 	GENERATED_BODY()

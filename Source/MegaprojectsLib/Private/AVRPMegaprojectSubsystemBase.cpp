@@ -1,7 +1,7 @@
 #include "AVRPMegaprojectSubsystemBase.h"
 #include "AVRPUnlockMegaproject.h"
-#include "AVRPMegaprojectsManager.h"
 #include "FGSchematicManager.h"
+#include "UnrealNetwork.h"
 
 AAVRPMegaprojectSubsystemBase::AAVRPMegaprojectSubsystemBase()
 {
@@ -10,18 +10,15 @@ AAVRPMegaprojectSubsystemBase::AAVRPMegaprojectSubsystemBase()
 
 void AAVRPMegaprojectSubsystemBase::BeginPlay()
 {
-	if (auto manager = AFGSchematicManager::Get(GetWorld()))
-	{
-		manager->PurchasedSchematicDelegate.AddDynamic(this, &AAVRPMegaprojectSubsystemBase::HandleSchematicPurchased);
-	}
+	Super::BeginPlay();
+	AFGSchematicManager::Get(this)->PurchasedSchematicDelegate.AddDynamic(this, &AAVRPMegaprojectSubsystemBase::HandleSchematicPurchased);
+	ResolveMegaprojectState();
 }
 
 void AAVRPMegaprojectSubsystemBase::EndPlay(const EEndPlayReason::Type endPlayReason)
 {
-	if(auto manager = AFGSchematicManager::Get(GetWorld()))
-	{
-		manager->PurchasedSchematicDelegate.RemoveDynamic(this, &AAVRPMegaprojectSubsystemBase::HandleSchematicPurchased);
-	}
+	Super::EndPlay(endPlayReason);
+	AFGSchematicManager::Get(this)->PurchasedSchematicDelegate.RemoveDynamic(this, &AAVRPMegaprojectSubsystemBase::HandleSchematicPurchased);
 }
 
 int AAVRPMegaprojectSubsystemBase::GetCurrentPhase()
@@ -43,29 +40,20 @@ FText AAVRPMegaprojectSubsystemBase::GetUnlockedDescription()
 
 void AAVRPMegaprojectSubsystemBase::HandleSchematicPurchased(TSubclassOf<UFGSchematic> schematic)
 {
-	auto isSchematicAPhase = false;
 	for (auto phase : megaprojectPhases) {
 		if (phase.Value.schematic == schematic) {
 			OnMegaprojectPhaseChanged.Broadcast(GetCurrentPhase());
-			AAVRPMegaprojectsManager::Get(this)->UnlockBaseSchematic();
+			return;
 		}
 	}
+
 	for (auto unlock : UFGSchematic::GetUnlocks(schematic)) {
-		auto unlockMegaproject = Cast<UAVRPUnlockMegaproject>(unlock);
-		if (unlockMegaproject && this->IsA(unlockMegaproject->megaproject)) {
-			SpawnMegaprojectStarter(unlockMegaproject->displayStarterLocation);
+		UAVRPUnlockMegaproject* unlockMegaproject = Cast<UAVRPUnlockMegaproject>(unlock);
+		if (unlockMegaproject && mCurrentInitiationStage < EMegaprojectInitiationStage::MIS_Initiated) {
+			mCurrentInitiationStage = EMegaprojectInitiationStage::MIS_Unlocked;
+			mCurrentDisplayLocation |= unlockMegaproject->displayStarterLocation;
+			ResolveMegaprojectState();
+			return;
 		}
 	}
-}
-
-void AAVRPMegaprojectSubsystemBase::SpawnMegaprojectStarter(bool displayLocation)
-{
-	//Implement later
-	//Spawns Megaproject Starter and provides it with relevant data
-}
-
-void AAVRPMegaprojectSubsystemBase::SpawnMegaproject()
-{
-	//Implement later
-	//Spawns Megaproject and provides it with relevant data
 }

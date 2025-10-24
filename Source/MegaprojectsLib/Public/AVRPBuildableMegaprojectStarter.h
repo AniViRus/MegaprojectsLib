@@ -24,8 +24,6 @@ public:
 	FOnInitiationRequested OnInitiationRequested;
 protected:
 	UPROPERTY(BlueprintReadWrite, SaveGame)
-	TSubclassOf<AAVRPMegaprojectSubsystemBase> MegaprojectSubsystem;
-	UPROPERTY(BlueprintReadWrite, SaveGame)
 	bool Display;
 
 public:

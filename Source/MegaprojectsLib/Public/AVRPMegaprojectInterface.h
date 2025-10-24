@@ -2,7 +2,6 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include "AVRPMegaprojectSubsystemBase.h"
 #include "FGActorRepresentationInterface.h"
 #include "AVRPMegaprojectInterface.generated.h"
 
@@ -26,6 +25,4 @@ public:
 	//A lot of vanilla buildables need to have Super::BeginPlay() to get called for proper reconfiguration
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Megaproject")
 	void OnPhaseChanged(int phase);
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Megaproject")
-	TSubclassOf<AAVRPMegaprojectSubsystemBase> GetMegaprojectSubsystem();
 };

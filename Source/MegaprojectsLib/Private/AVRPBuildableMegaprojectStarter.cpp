@@ -3,7 +3,7 @@
 
 void AAVRPBuildableMegaprojectStarter::SetDisplayLocation(bool display)
 {
-	Display |= display;
+	Display = display;
 	//manipulate actor representation interface
 }
 

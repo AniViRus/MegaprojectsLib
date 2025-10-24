@@ -7,6 +7,7 @@
 #include "FGFactoryConnectionComponent.h"
 #include "FGBuildableFactory.h"
 #include "FGSaveInterface.h"
+#include "AVRPMegaprojectInterface.h"
 #include "AVRPBuildableMegaprojectStarter.h"
 #include "AVRPMegaprojectSubsystemBase.generated.h"
 
@@ -79,10 +80,12 @@ protected:
 	void HandleSchematicPurchased(TSubclassOf<UFGSchematic> schematic);
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void ResolveMegaprojectState();
-	UPROPERTY(BlueprintReadWrite)
-	AAVRPBuildableMegaprojectStarter* mMegaprojectStarterInstance;
 	UPROPERTY(BlueprintReadWrite, SaveGame)
 	EMegaprojectInitiationStage mCurrentInitiationStage;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, SaveGame, Category = "Megaproject")
 	bool mCurrentDisplayLocation = false;
+	UPROPERTY(BlueprintReadWrite, SaveGame)
+	AAVRPBuildableMegaprojectStarter* mMegaprojectStarterInstance;
+	UPROPERTY(BlueprintReadWrite, SaveGame)
+	TScriptInterface<IAVRPMegaprojectInterface> mMegaprojectInstance;
 };

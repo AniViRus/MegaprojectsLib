@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
+#include "FGActorRepresentationManager.h"
 #include "FGActorRepresentationInterface.h"
 #include "AVRPMegaprojectInterface.generated.h"
 
@@ -13,12 +14,13 @@ class UAVRPMegaprojectInterface : public UFGActorRepresentationInterface
 };
 
 /**
- * Intreface to identify Buildable as a megaproject.
+ * Interface to identify Buildable as a megaproject. Check AVRPBuildableMegaprojectStarter for example of IFGActorRepresentationInterface implementation
  */
 class MEGAPROJECTSLIB_API IAVRPMegaprojectInterface: public IFGActorRepresentationInterface
 {
 	GENERATED_BODY()
 public:
+	class AAVRPMegaprojectSubsystemBase;
 	// Acts as BeginPlay(), called remotely. Make sure you bind OnPhaseChanged to subsystem's OnMegaprojectPhaseChanged and call buildable's Super::BeginPlay when implementing
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Megaproject")
 	void BeginFromPhase(int phase);

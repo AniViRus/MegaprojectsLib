@@ -38,6 +38,11 @@ AAVRPMegaprojectSubsystemBase* AAVRPMegaprojectsManager::GetSubsystemOf(AActor* 
     return nullptr;
 }
 
+TArray<AAVRPMegaprojectSubsystemBase*> AAVRPMegaprojectsManager::GetMegaprojects()
+{
+    return TArray<AAVRPMegaprojectSubsystemBase*>(mSubsystems);
+}
+
 bool AAVRPMegaprojectsManager::ShouldSave_Implementation() const
 {
     return true;

@@ -46,10 +46,17 @@ public:
 	UFUNCTION(BlueprintCallable)
 	int GetCurrentLevel();
 
+	// Locks Megaproject if it is unlocked and wasn't initiated yet. Use it for your own gimmicks (i.e. You have 3 options for Megaproject's location (3 Megaprojects), initiating one locks others)
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	bool LockMegaproject();
+
+	UPROPERTY(BlueprintReadWrite, SaveGame)
+	EMegaprojectInitiationStage mCurrentInitiationStage;
+
 	//A building subclass to associate Megaproject with. Introduced just to make sure you have actually made everything required for buildable to be considered a Megaproject
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Megaproject", meta = (MustImplement = "AVRPMegaprojectInterface", BlueprintBaseOnly))
 	TSubclassOf<AFGBuildableFactory> megaprojectBuild;
-
+	//Is also called before initializing Megaprojects as an extra sign for Manager building to close UI
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FOnMegaprojectPhaseChanged OnMegaprojectPhaseChanged;
 
@@ -74,8 +81,6 @@ protected:
 	void ResolveMegaprojectState();
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	UStaticMesh* GetPreviewMesh();
-	UPROPERTY(BlueprintReadWrite, SaveGame)
-	EMegaprojectInitiationStage mCurrentInitiationStage;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, SaveGame, Category = "Megaproject")
 	bool mCurrentDisplayLocation = false;
 	UPROPERTY(BlueprintReadWrite, SaveGame)

@@ -25,15 +25,17 @@ public:
 	// Actor-to-subsystem bridge
 	UFUNCTION(BlueprintPure, BlueprintCallable)
 	AAVRPMegaprojectSubsystemBase* GetSubsystemOf(AActor* actor) const;
+	UFUNCTION(BlueprintCallable)
+	TArray<AAVRPMegaprojectSubsystemBase*> GetMegaprojects();
 	virtual bool ShouldSave_Implementation() const override;
 	UFUNCTION(BlueprintCallable)
 	void SetTrackedMegaproject(AAVRPMegaprojectSubsystemBase* subsystem);
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FOnTrackedMegaprojectChanged OnTrackedMegaprojectChanged;
+	UPROPERTY(BlueprintReadOnly, SaveGame)
+	AAVRPMegaprojectSubsystemBase* trackedSubsystem;
 protected:
 	// List of subsystems
 	UPROPERTY(BlueprintReadOnly)
 	TArray <AAVRPMegaprojectSubsystemBase*> mSubsystems;
-	UPROPERTY(BlueprintReadOnly, SaveGame)
-	AAVRPMegaprojectSubsystemBase* trackedSubsystem;
 };

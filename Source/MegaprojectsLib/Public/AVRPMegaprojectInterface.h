@@ -27,4 +27,7 @@ public:
 	//A lot of vanilla buildables need to have Super::BeginPlay() to get called for proper reconfiguration
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Megaproject")
 	void OnPhaseChanged(int phase);
+	//Since Megaprojects don't require descriptor, implement building icon for Manager UI here
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Megaproject")
+	UTexture2D* GetMegaprojectIcon();
 };

@@ -78,7 +78,8 @@ bool AAVRPBuildableMegaprojectStarter::UpdateRepresentation()
 bool AAVRPBuildableMegaprojectStarter::RemoveAsRepresentation()
 {
 	if (auto manager = AFGActorRepresentationManager::Get(this)) {
-		manager->RemoveRepresentation(cachedRepresentation);
+		manager->RemoveRepresentationOfActor(this);
+		cachedRepresentation = nullptr;
 		return true;
 	}
 	return false;

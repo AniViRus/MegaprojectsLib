@@ -50,7 +50,6 @@ bool AAVRPMegaprojectsManager::ShouldSave_Implementation() const
 
 void AAVRPMegaprojectsManager::SetTrackedMegaproject(AAVRPMegaprojectSubsystemBase* subsystem)
 {
-    if (subsystem->GetCurrentLevel() >= subsystem->megaprojectPhases.Num()) trackedSubsystem = nullptr;
-    else trackedSubsystem = subsystem;
+    trackedSubsystem = subsystem;
     OnTrackedMegaprojectChanged.Broadcast(trackedSubsystem);
 }

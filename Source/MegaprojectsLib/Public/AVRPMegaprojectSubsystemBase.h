@@ -27,8 +27,8 @@ USTRUCT(BlueprintType)
 struct FAVRPMegaprojectPhase
 {
 	GENERATED_BODY()
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	TMap<int, FText> description;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (MultiLine = true))
+	FText description;
 };
 /**
  * Base class representing a specific megaproject. Has essentials for any megaproject

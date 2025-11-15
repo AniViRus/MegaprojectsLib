@@ -17,7 +17,7 @@ void AAVRPMegaprojectsManager::RegisterMegaprojectSubsystem(AAVRPMegaprojectSubs
     if (!mSubsystems.Contains(subsystem)) mSubsystems.Add(subsystem);
     for (auto phase : subsystem->megaprojectPhases)
     {
-        UModContentRegistry::Get(this)->RegisterSchematic(TEXT("Megaprojects"), phase);
+        UModContentRegistry::Get(this)->RegisterSchematic(TEXT("Megaprojects"), phase.schematic);
     }
 }
 

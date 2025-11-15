@@ -27,6 +27,8 @@ USTRUCT(BlueprintType)
 struct FAVRPMegaprojectPhase
 {
 	GENERATED_BODY()
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	TSubclassOf<UFGSchematic> schematic;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (MultiLine = true))
 	FText description;
 };
@@ -42,7 +44,10 @@ public:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type endPlayReason) override;
 
-	// Get current Megaproject level, starting from 0. Determined by amount of phase schematics unlocked
+	// Get current Megaproject phase. Determined by amount of phase schematics unlocked
+	UFUNCTION(BlueprintCallable)
+	int GetCurrentPhase();
+	// Level = Phase - 1
 	UFUNCTION(BlueprintCallable)
 	int GetCurrentLevel();
 
@@ -60,12 +65,9 @@ public:
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FOnMegaprojectPhaseChanged OnMegaprojectPhaseChanged;
 
-	//Megaproject levels, as in the amount of states building can be in
+	//Megaproject phases, as in the amount of states building can be in. When initiated, schematic at index 0 automatically unlocks, its cost doesn't matter.
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Megaproject")
-	TArray<FAVRPMegaprojectPhase> megaprojectLevels;
-	//Megaproject phases, the amount of times building can be upgraded. By default the count should be equal to "megaprojectLevels - 1"
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Megaproject")
-	TArray<TSubclassOf<UFGSchematic>> megaprojectPhases;
+	TArray<FAVRPMegaprojectPhase> megaprojectPhases;
 
 	//Location of the Megaproject's initializer
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Megaproject")
@@ -73,6 +75,9 @@ public:
 	//Location of the Megaproject building
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Megaproject")
 	FTransform MegaprojectLocation;
+#if WITH_EDITOR
+	virtual EDataValidationResult IsDataValid(FDataValidationContext& validationContext) const override;
+#endif
 protected:
 	// Since I was unable to make Unlock Subsystem work as I need, subsystems handle unlocks on their own
 	UFUNCTION()

@@ -19,21 +19,26 @@ void AAVRPMegaprojectSubsystemBase::EndPlay(const EEndPlayReason::Type endPlayRe
 	AFGSchematicManager::Get(this)->PurchasedSchematicDelegate.RemoveDynamic(this, &AAVRPMegaprojectSubsystemBase::HandleSchematicPurchased);
 }
 
-int AAVRPMegaprojectSubsystemBase::GetCurrentLevel()
+int AAVRPMegaprojectSubsystemBase::GetCurrentPhase()
 {
 	int phasesUnlocked = 0;
 	for (auto phase : megaprojectPhases) {
-		if (AFGSchematicManager::Get(this)->IsSchematicPurchased(phase)) {
+		if (AFGSchematicManager::Get(this)->IsSchematicPurchased(phase.schematic)) {
 			phasesUnlocked++;
 		}
 	}
 	return phasesUnlocked;
 }
 
+int AAVRPMegaprojectSubsystemBase::GetCurrentLevel()
+{
+	return GetCurrentPhase() - 1;
+}
+
 void AAVRPMegaprojectSubsystemBase::HandleSchematicPurchased(TSubclassOf<UFGSchematic> schematic)
 {
 	for (auto phase : megaprojectPhases) {
-		if (phase == schematic) {
+		if (phase.schematic == schematic) {
 			OnMegaprojectPhaseChanged.Broadcast(GetCurrentLevel());
 			return;
 		}
@@ -49,3 +54,19 @@ void AAVRPMegaprojectSubsystemBase::HandleSchematicPurchased(TSubclassOf<UFGSche
 		}
 	}
 }
+
+#if WITH_EDITOR
+EDataValidationResult AAVRPMegaprojectSubsystemBase::IsDataValid(FDataValidationContext& validationContext) const {
+	EDataValidationResult ValidationResult = Super::IsDataValid(validationContext);
+
+	auto schematics = TArray<TSubclassOf<UFGSchematic>>();
+	for (auto phase : megaprojectPhases) {
+		if (!IsValid(phase.schematic) || schematics.Contains(phase.schematic)) {
+			validationContext.AddError(FText::FromString(TEXT("Invalid schematic found in Megaproject phases. Should not be null or have duplicates.")));
+			ValidationResult = EDataValidationResult::Invalid;
+		}
+		schematics.Add(phase.schematic);
+	}
+	return ValidationResult;
+}
+#endif

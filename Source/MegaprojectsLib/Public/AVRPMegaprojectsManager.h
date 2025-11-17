@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "FGBuildable.h"
 #include "FGSaveInterface.h"
 #include "Subsystem/ModSubsystem.h"
 #include "AVRPMegaprojectSubsystemBase.h"
@@ -22,9 +23,6 @@ public:
 	//Call in base subsystems' BeginPlay (and EndPlay if that ever happens)
 	void RegisterMegaprojectSubsystem(AAVRPMegaprojectSubsystemBase* subsystem);
 	void UnregisterMegaprojectSubsystem(AAVRPMegaprojectSubsystemBase* subsystem);
-	// Actor-to-subsystem bridge
-	UFUNCTION(BlueprintPure, BlueprintCallable)
-	AAVRPMegaprojectSubsystemBase* GetSubsystemOf(AActor* actor) const;
 	UFUNCTION(BlueprintCallable)
 	TArray<AAVRPMegaprojectSubsystemBase*> GetMegaprojects();
 	virtual bool ShouldSave_Implementation() const override;
@@ -37,5 +35,5 @@ public:
 protected:
 	// List of subsystems
 	UPROPERTY(BlueprintReadOnly)
-	TArray <AAVRPMegaprojectSubsystemBase*> mSubsystems;
+	TArray <AAVRPMegaprojectSubsystemBase*> mSubsystems = TArray<AAVRPMegaprojectSubsystemBase*>();
 };

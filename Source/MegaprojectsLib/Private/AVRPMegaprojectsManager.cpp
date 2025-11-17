@@ -14,7 +14,7 @@ AAVRPMegaprojectsManager* AAVRPMegaprojectsManager::Get(const UObject* worldCont
 void AAVRPMegaprojectsManager::RegisterMegaprojectSubsystem(AAVRPMegaprojectSubsystemBase* subsystem)
 {
     if (!subsystem) return;
-    if (!mSubsystems.Contains(subsystem)) mSubsystems.Add(subsystem);
+    mSubsystems.AddUnique(subsystem);
     for (auto phase : subsystem->megaprojectPhases)
     {
         UModContentRegistry::Get(this)->RegisterSchematic(TEXT("Megaprojects"), phase.schematic);
@@ -25,17 +25,6 @@ void AAVRPMegaprojectsManager::UnregisterMegaprojectSubsystem(AAVRPMegaprojectSu
 {
     if (!subsystem) return;
     mSubsystems.Remove(subsystem);
-}
-
-AAVRPMegaprojectSubsystemBase* AAVRPMegaprojectsManager::GetSubsystemOf(AActor* actor) const
-{
-    if (!actor) return nullptr;
-    for (auto subsystem : mSubsystems) {
-        if (actor->IsA(subsystem->megaprojectBuild->StaticClass())) {
-            return subsystem;
-        }
-    }
-    return nullptr;
 }
 
 TArray<AAVRPMegaprojectSubsystemBase*> AAVRPMegaprojectsManager::GetMegaprojects()

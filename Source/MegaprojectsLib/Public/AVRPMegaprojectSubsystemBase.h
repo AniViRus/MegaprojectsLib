@@ -12,6 +12,7 @@
 #include "AVRPMegaprojectSubsystemBase.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMegaprojectPhaseChanged, int, NewLevel);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnMegaprojectStageResolved);
 
 //Enum to define stage of megaproject initiation
 UENUM(BlueprintType)
@@ -45,13 +46,18 @@ public:
 	virtual void EndPlay(const EEndPlayReason::Type endPlayReason) override;
 
 	// Get current Megaproject phase. Determined by amount of phase schematics unlocked
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintPure)
 	int GetCurrentPhase();
 	// Level = Phase - 1
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintPure)
 	int GetCurrentLevel();
 
-	// Locks Megaproject if it is unlocked and wasn't initiated yet. Use it for your own gimmicks (i.e. You have 3 options for Megaproject's location (3 Megaprojects), initiating one locks others)
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	TSubclassOf<UFGSchematic> GetCurrentSchematic();
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	bool IsFinished();
+
+	// Locks Megaproject if it is unlocked and wasn't initiated yet. Use it for your own gimmicks (i.e. You have 3 options for Megaproject's location (3 Megaprojects), initiating one locks others) - recommended calling outside of subsystems themselves
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	bool LockMegaproject();
 
@@ -62,6 +68,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Megaproject", meta = (MustImplement = "AVRPMegaprojectInterface", BlueprintBaseOnly))
 	TSubclassOf<AFGBuildableFactory> megaprojectBuild;
 	//Is also called before initializing Megaprojects as an extra sign for Manager building to close UI
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+	FOnMegaprojectStageResolved OnMegaprojectStageResolved;
+
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FOnMegaprojectPhaseChanged OnMegaprojectPhaseChanged;
 
@@ -79,12 +88,11 @@ public:
 	virtual EDataValidationResult IsDataValid(FDataValidationContext& validationContext) const override;
 #endif
 protected:
-	// Since I was unable to make Unlock Subsystem work as I need, subsystems handle unlocks on their own
 	UFUNCTION()
 	void HandleSchematicPurchased(TSubclassOf<UFGSchematic> schematic);
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void ResolveMegaprojectState();
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, BlueprintPure)
 	UStaticMesh* GetPreviewMesh();
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, SaveGame, Category = "Megaproject")
 	bool mCurrentDisplayLocation = false;

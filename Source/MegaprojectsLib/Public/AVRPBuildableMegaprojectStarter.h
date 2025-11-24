@@ -9,7 +9,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInitiationRequested);
 
 class AAVRPMegaprojectSubsystemBase;
 /**
- * A building which represents as an initializer for Megaproject. Not for inheritance
+ * A building which represents as an initializer for Megaproject. Can be derived for extra mechanics
  */
 UCLASS(Abstract)
 class MEGAPROJECTSLIB_API AAVRPBuildableMegaprojectStarter : public AFGBuildable, public IFGActorRepresentationInterface
@@ -19,7 +19,7 @@ public:
 	AAVRPBuildableMegaprojectStarter();
 	virtual void EndPlay(const EEndPlayReason::Type endPlayReason) override;
 	UFUNCTION(BlueprintCallable)
-	void SetupStarter(TSubclassOf<AFGBuildable> megaproject, UStaticMesh* mesh, FTransform transform, bool display);
+	virtual void SetupStarter(TSubclassOf<AFGBuildable> megaproject, UStaticMesh* mesh, FTransform transform, bool display);
 	UFUNCTION(BlueprintCallable)
 	void InitiateMegaproject();
 	UFUNCTION(BlueprintCallable)

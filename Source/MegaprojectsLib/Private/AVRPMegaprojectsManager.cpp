@@ -15,10 +15,6 @@ void AAVRPMegaprojectsManager::RegisterMegaprojectSubsystem(AAVRPMegaprojectSubs
 {
     if (!subsystem) return;
     mSubsystems.AddUnique(subsystem);
-    for (auto phase : subsystem->megaprojectPhases)
-    {
-        UModContentRegistry::Get(this)->RegisterSchematic(TEXT("Megaprojects"), phase.schematic);
-    }
 }
 
 void AAVRPMegaprojectsManager::UnregisterMegaprojectSubsystem(AAVRPMegaprojectSubsystemBase* subsystem)

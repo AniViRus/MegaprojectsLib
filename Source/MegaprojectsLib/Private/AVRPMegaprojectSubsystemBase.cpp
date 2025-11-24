@@ -35,21 +35,22 @@ int AAVRPMegaprojectSubsystemBase::GetCurrentLevel()
 	return GetCurrentPhase() - 1;
 }
 
+TSubclassOf<UFGSchematic> AAVRPMegaprojectSubsystemBase::GetCurrentSchematic()
+{
+	if (IsFinished()) return nullptr;
+	return megaprojectPhases[GetCurrentPhase()].schematic;
+}
+
+bool AAVRPMegaprojectSubsystemBase::IsFinished()
+{
+	return GetCurrentPhase() >= megaprojectPhases.Num();
+}
+
 void AAVRPMegaprojectSubsystemBase::HandleSchematicPurchased(TSubclassOf<UFGSchematic> schematic)
 {
 	for (auto phase : megaprojectPhases) {
 		if (phase.schematic == schematic) {
 			OnMegaprojectPhaseChanged.Broadcast(GetCurrentLevel());
-			return;
-		}
-	}
-
-	for (auto unlock : UFGSchematic::GetUnlocks(schematic)) {
-		UAVRPUnlockMegaproject* unlockMegaproject = Cast<UAVRPUnlockMegaproject>(unlock);
-		if (unlockMegaproject && IsA(unlockMegaproject->megaproject) && mCurrentInitiationStage < EMegaprojectInitiationStage::MIS_Initiated) {
-			mCurrentInitiationStage = EMegaprojectInitiationStage::MIS_Unlocked;
-			mCurrentDisplayLocation |= unlockMegaproject->displayStarterLocation;
-			ResolveMegaprojectState();
 			return;
 		}
 	}
@@ -64,6 +65,7 @@ EDataValidationResult AAVRPMegaprojectSubsystemBase::IsDataValid(FDataValidation
 		if (!IsValid(phase.schematic) || schematics.Contains(phase.schematic)) {
 			validationContext.AddError(FText::FromString(TEXT("Invalid schematic found in Megaproject phases. Should not be null or have duplicates.")));
 			ValidationResult = EDataValidationResult::Invalid;
+			return ValidationResult;
 		}
 		schematics.Add(phase.schematic);
 	}

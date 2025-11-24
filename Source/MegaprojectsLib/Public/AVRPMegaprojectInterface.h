@@ -2,31 +2,32 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include "FGActorRepresentationManager.h"
 #include "FGActorRepresentationInterface.h"
+#include "FGActorRepresentationManager.h"
+#include "FGActorRepresentation.h"
 #include "AVRPMegaprojectInterface.generated.h"
 
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI, BlueprintType, Blueprintable)
-class UAVRPMegaprojectInterface : public UFGActorRepresentationInterface
+class UAVRPMegaprojectInterface : public UInterface
 {
 	GENERATED_BODY()
 };
 
 /**
- * Interface to identify Buildable as a megaproject. Check AVRPBuildableMegaprojectStarter for example of IFGActorRepresentationInterface implementation
+ * Interface to identify Buildable as a megaproject. Check AVRPBuildableMegaprojectStarter for example of IFGActorRepresentationInterface implementation, it's mandatory
  */
-class MEGAPROJECTSLIB_API IAVRPMegaprojectInterface: public IFGActorRepresentationInterface
+class MEGAPROJECTSLIB_API IAVRPMegaprojectInterface
 {
 	GENERATED_BODY()
 public:
 	class AAVRPMegaprojectSubsystemBase;
-	// Acts as BeginPlay(), called remotely. Make sure you bind OnPhaseChanged to subsystem's OnMegaprojectPhaseChanged and call buildable's Super::BeginPlay when implementing
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Megaproject")
-	void BeginFromPhase(int phase);
+	// Acts as level-specific BeginPlay(), called remotely
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Megaproject", BlueprintAuthorityOnly)
+	void BeginFromLevel(int level);
 	//A lot of vanilla buildables need to have Super::BeginPlay() to get called for proper reconfiguration
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Megaproject")
-	void OnPhaseChanged(int phase);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Megaproject", BlueprintAuthorityOnly)
+	void OnLevelChanged(int level);
 	//Since Megaprojects don't require descriptor, implement building icon for Manager UI here
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Megaproject")
 	UTexture2D* GetMegaprojectIcon();

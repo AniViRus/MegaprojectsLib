@@ -6,10 +6,9 @@
 #include "AVRPUnlockMegaproject.generated.h"
 
 /**
- * Simple info only unlock which is responsible for enabling ability to initiate the Megaproject.
- * It basically tells to update Megaproject initiation stage it's related to. 
+ * Simple unlock which is responsible for enabling ability to initiate the Megaproject.
  * 
- * displayStarterLocation is for gimmick including megaprojects (World Radar's starter won't reveal location at first, but player can find it earlier)
+ * displayStarterLocation is for gimmick including megaprojects (World Radar's Initializer won't reveal location at first, but player can find it earlier)
  */
 UCLASS( Blueprintable, EditInlineNew, Abstract, DefaultToInstanced )
 class MEGAPROJECTSLIB_API UAVRPUnlockMegaproject : public UFGUnlock

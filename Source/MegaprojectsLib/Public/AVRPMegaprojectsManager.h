@@ -18,7 +18,7 @@ class MEGAPROJECTSLIB_API AAVRPMegaprojectsManager : public AModSubsystem, publi
 	GENERATED_BODY()
 public:
 	// Manager getter
-	UFUNCTION(BlueprintPure, Category = "Megaprojects", Meta = (DefaultToSelf = "worldContext"))
+	UFUNCTION(BlueprintPure, Category = "Megaprojects", Meta = (DefaultToSelf = "worldContext", DisplayName = "Get Megaprojects Manager"))
 	static AAVRPMegaprojectsManager* Get(const UObject* worldContext);
 	//Call in base subsystems' BeginPlay (and EndPlay if that ever happens)
 	void RegisterMegaprojectSubsystem(AAVRPMegaprojectSubsystemBase* subsystem);

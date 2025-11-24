@@ -1,4 +1,5 @@
 #include "AVRPBuildableMegaprojectStarter.h"
+#include "FGActorRepresentationInterface.h"
 #include "FGActorRepresentationManager.h"
 
 AAVRPBuildableMegaprojectStarter::AAVRPBuildableMegaprojectStarter()
@@ -102,12 +103,12 @@ FRotator AAVRPBuildableMegaprojectStarter::GetRealActorRotation()
 
 UTexture2D* AAVRPBuildableMegaprojectStarter::GetActorRepresentationTexture()
 {
-	return Cast<IAVRPMegaprojectInterface>(cachedMegaproject->GetDefaultObject())->GetActorRepresentationTexture();
+	return Cast<IFGActorRepresentationInterface>(cachedMegaproject->GetDefaultObject())->GetActorRepresentationTexture();
 }
 
 UMaterialInterface* AAVRPBuildableMegaprojectStarter::GetActorRepresentationCompassMaterial()
 {
-	return Cast<IAVRPMegaprojectInterface>(cachedMegaproject->GetDefaultObject())->GetActorRepresentationCompassMaterial();
+	return Cast<IFGActorRepresentationInterface>(cachedMegaproject->GetDefaultObject())->GetActorRepresentationCompassMaterial();
 }
 
 FText AAVRPBuildableMegaprojectStarter::GetActorRepresentationText()
@@ -133,13 +134,13 @@ ERepresentationType AAVRPBuildableMegaprojectStarter::GetActorRepresentationType
 
 bool AAVRPBuildableMegaprojectStarter::GetActorShouldShowInCompass()
 {
-	//Does nothing
+	//Behaviour may be unpredictable, so I'd advice to instead show/hide icon by creating/removing representations 
 	return Display;
 }
 
 bool AAVRPBuildableMegaprojectStarter::GetActorShouldShowOnMap()
 {
-	//Does nothing
+	//Behaviour may be unpredictable, so I'd advice to instead show/hide icon by creating/removing representations 
 	return Display;
 }
 

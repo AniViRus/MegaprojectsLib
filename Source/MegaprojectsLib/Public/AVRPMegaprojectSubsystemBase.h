@@ -43,6 +43,7 @@ class MEGAPROJECTSLIB_API AAVRPMegaprojectSubsystemBase : public AModSubsystem, 
 public:
 	friend class AAVRPBuildableMegaprojectStarter;
 	virtual void BeginPlay() override;
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void EndPlay(const EEndPlayReason::Type endPlayReason) override;
 
 	// Get current Megaproject phase. Determined by amount of phase schematics unlocked
@@ -58,10 +59,10 @@ public:
 	bool IsFinished();
 
 	// Locks Megaproject if it is unlocked and wasn't initiated yet. Use it for your own gimmicks (i.e. You have 3 options for Megaproject's location (3 Megaprojects), initiating one locks others) - recommended calling outside of subsystems themselves
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, BlueprintAuthorityOnly)
 	bool LockMegaproject();
 
-	UPROPERTY(BlueprintReadWrite, SaveGame)
+	UPROPERTY(BlueprintReadWrite, SaveGame, Replicated)
 	EMegaprojectInitiationStage mCurrentInitiationStage;
 
 	//A building subclass to associate Megaproject with. Introduced just to make sure you have actually made everything required for buildable to be considered a Megaproject
@@ -90,14 +91,14 @@ public:
 protected:
 	UFUNCTION()
 	void HandleSchematicPurchased(TSubclassOf<UFGSchematic> schematic);
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, BlueprintAuthorityOnly)
 	void ResolveMegaprojectState();
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, BlueprintPure)
 	UStaticMesh* GetPreviewMesh();
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, SaveGame, Category = "Megaproject")
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, SaveGame, Replicated, Category = "Megaproject")
 	bool mCurrentDisplayLocation = false;
-	UPROPERTY(BlueprintReadWrite, SaveGame)
+	UPROPERTY(BlueprintReadWrite, Replicated, SaveGame)
 	AAVRPBuildableMegaprojectStarter* mMegaprojectStarterInstance;
-	UPROPERTY(BlueprintReadWrite, SaveGame)
+	UPROPERTY(BlueprintReadWrite, Replicated, SaveGame)
 	TScriptInterface<IAVRPMegaprojectInterface> mMegaprojectInstance;
 };

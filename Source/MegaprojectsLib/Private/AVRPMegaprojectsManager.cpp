@@ -3,6 +3,11 @@
 #include "Registry/ModContentRegistry.h"
 #include "Subsystem/SubsystemActorManager.h"
 
+AAVRPMegaprojectsManager::AAVRPMegaprojectsManager()
+{
+    ReplicationPolicy = ESubsystemReplicationPolicy::SpawnLocal;
+}
+
 AAVRPMegaprojectsManager* AAVRPMegaprojectsManager::Get(const UObject* worldContext)
 {
     UWorld* WorldObject = GEngine->GetWorldFromContextObjectChecked(worldContext);

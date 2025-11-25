@@ -9,7 +9,17 @@ void AAVRPMegaprojectSubsystemBase::BeginPlay()
 	Super::BeginPlay();
 	AAVRPMegaprojectsManager::Get(this)->RegisterMegaprojectSubsystem(this);
 	AFGSchematicManager::Get(this)->PurchasedSchematicDelegate.AddDynamic(this, &AAVRPMegaprojectSubsystemBase::HandleSchematicPurchased);
+	if (!HasAuthority()) return;
 	ResolveMegaprojectState();
+}
+
+void AAVRPMegaprojectSubsystemBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AAVRPMegaprojectSubsystemBase, mCurrentInitiationStage);
+	DOREPLIFETIME(AAVRPMegaprojectSubsystemBase, mCurrentDisplayLocation);
+	DOREPLIFETIME(AAVRPMegaprojectSubsystemBase, mMegaprojectStarterInstance);
+	DOREPLIFETIME(AAVRPMegaprojectSubsystemBase, mMegaprojectInstance);
 }
 
 void AAVRPMegaprojectSubsystemBase::EndPlay(const EEndPlayReason::Type endPlayReason)

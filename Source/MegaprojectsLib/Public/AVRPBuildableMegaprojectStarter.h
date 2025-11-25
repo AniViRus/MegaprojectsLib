@@ -5,7 +5,7 @@
 #include "AVRPMegaprojectInterface.h"
 #include "AVRPBuildableMegaprojectStarter.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInitiationRequested);
+DECLARE_DYNAMIC_DELEGATE(FOnInitiationRequested);
 
 class AAVRPMegaprojectSubsystemBase;
 /**
@@ -17,6 +17,7 @@ class MEGAPROJECTSLIB_API AAVRPBuildableMegaprojectStarter : public AFGBuildable
 	GENERATED_BODY()
 public:
 	AAVRPBuildableMegaprojectStarter();
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void EndPlay(const EEndPlayReason::Type endPlayReason) override;
 	UFUNCTION(BlueprintCallable)
 	virtual void SetupStarter(TSubclassOf<AFGBuildable> megaproject, UStaticMesh* mesh, FTransform transform, bool display);
@@ -28,10 +29,10 @@ public:
 	void SetToRepresentPref(bool display);
 	UFUNCTION(BlueprintCallable)
 	void SetDisplayPreviewPref(bool display);
-	UPROPERTY(BlueprintAssignable)
+	UPROPERTY(BlueprintReadWrite)
 	FOnInitiationRequested OnInitiationRequested;
 protected:
-	UPROPERTY(BlueprintReadOnly, SaveGame)
+	UPROPERTY(BlueprintReadOnly, SaveGame, ReplicatedUsing = "OnRep_Display")
 	bool Display;
 	UPROPERTY(BlueprintReadOnly, SaveGame)
 	bool DisplayPref = true;
@@ -41,8 +42,10 @@ protected:
 	UStaticMeshComponent* previewMesh;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	UMaterialInstance* hologramMaterial;
-	UPROPERTY(BlueprintReadOnly, Transient)
+	UPROPERTY(BlueprintReadOnly, Transient, Replicated)
 	TSubclassOf<AFGBuildable> cachedMegaproject;
+	UFUNCTION()
+	void OnRep_Display();
 private:
 	UPROPERTY(Transient)
 	UFGActorRepresentation* cachedRepresentation;

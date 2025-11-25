@@ -1,14 +1,24 @@
 #include "AVRPBuildableMegaprojectStarter.h"
 #include "FGActorRepresentationInterface.h"
 #include "FGActorRepresentationManager.h"
+#include "UnrealNetwork.h"
 
 AAVRPBuildableMegaprojectStarter::AAVRPBuildableMegaprojectStarter()
 {
 	previewMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SecondStorageInventory"));
 }
 
+void AAVRPBuildableMegaprojectStarter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AAVRPBuildableMegaprojectStarter, Display);
+	DOREPLIFETIME(AAVRPBuildableMegaprojectStarter, cachedMegaproject);
+}
+
 void AAVRPBuildableMegaprojectStarter::EndPlay(const EEndPlayReason::Type endPlayReason)
 {
+	Super::EndPlay(endPlayReason);
+	if (!HasAuthority()) return;
 	RemoveAsRepresentation();
 }
 
@@ -29,7 +39,7 @@ void AAVRPBuildableMegaprojectStarter::SetupStarter(TSubclassOf<AFGBuildable> me
 
 void AAVRPBuildableMegaprojectStarter::InitiateMegaproject()
 {
-	OnInitiationRequested.Broadcast();
+	OnInitiationRequested.ExecuteIfBound();
 }
 
 void AAVRPBuildableMegaprojectStarter::SetToRepresent(bool display)
@@ -50,11 +60,16 @@ void AAVRPBuildableMegaprojectStarter::SetDisplayPreviewPref(bool display)
 	previewMesh->SetVisibility(DisplayPreviewPref);
 }
 
+void AAVRPBuildableMegaprojectStarter::OnRep_Display()
+{
+	UpdateRepresentation();
+}
+
 bool AAVRPBuildableMegaprojectStarter::AddAsRepresentation()
 {
 	//Can also provide CreateAndAddNewRepresentation with custom UFGActorRepresentation class for advanced display on the map
 	if (auto manager = AFGActorRepresentationManager::Get(this)) {
-		cachedRepresentation = manager->CreateAndAddNewRepresentation(this);
+		cachedRepresentation = manager->CreateAndAddNewRepresentation(this, true);
 		return true;
 	}
 	return false;

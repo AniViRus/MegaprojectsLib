@@ -17,6 +17,7 @@ class MEGAPROJECTSLIB_API AAVRPMegaprojectsManager : public AModSubsystem, publi
 {
 	GENERATED_BODY()
 public:
+	AAVRPMegaprojectsManager();
 	// Manager getter
 	UFUNCTION(BlueprintPure, Category = "Megaprojects", Meta = (DefaultToSelf = "worldContext", DisplayName = "Get Megaprojects Manager"))
 	static AAVRPMegaprojectsManager* Get(const UObject* worldContext);
@@ -34,6 +35,6 @@ public:
 	AAVRPMegaprojectSubsystemBase* trackedSubsystem;
 protected:
 	// List of subsystems
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY()
 	TArray <AAVRPMegaprojectSubsystemBase*> mSubsystems = TArray<AAVRPMegaprojectSubsystemBase*>();
 };

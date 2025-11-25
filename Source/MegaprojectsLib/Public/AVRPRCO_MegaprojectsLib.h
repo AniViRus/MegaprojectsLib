@@ -13,6 +13,8 @@ class MEGAPROJECTSLIB_API UAVRPRCO_MegaprojectsLib : public UFGRemoteCallObject
 {
 	GENERATED_BODY()
 	UFUNCTION(Server, Reliable, BlueprintCallable)
+	void SetDisplayRPC(AAVRPBuildableMegaprojectStarter* context, bool display);
+	UFUNCTION(Server, Reliable, BlueprintCallable)
 	void InitiateMegaprojectRPC(AAVRPBuildableMegaprojectStarter* context);
 	UFUNCTION(Server, Reliable, BlueprintCallable)
 	void GiveAccessToSchematicRPC(TSubclassOf<UFGSchematic> schematic);

@@ -58,6 +58,7 @@ bool AAVRPMegaprojectSubsystemBase::IsFinished()
 
 void AAVRPMegaprojectSubsystemBase::HandleSchematicPurchased(TSubclassOf<UFGSchematic> schematic)
 {
+	if (!HasAuthority()) return;
 	for (auto phase : megaprojectPhases) {
 		if (phase.schematic == schematic) {
 			OnMegaprojectPhaseChanged.Broadcast(GetCurrentLevel());

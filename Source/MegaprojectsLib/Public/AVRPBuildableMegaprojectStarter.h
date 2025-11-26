@@ -46,6 +46,14 @@ protected:
 	TSubclassOf<AFGBuildable> cachedMegaproject;
 	UFUNCTION()
 	void OnRep_Display();
+	UPROPERTY(BlueprintReadOnly, Transient, ReplicatedUsing="OnRep_MegaprojectLocation")
+	FTransform MegaprojectLocation;
+	UFUNCTION()
+	void OnRep_MegaprojectLocation();
+	UPROPERTY(BlueprintReadOnly, Transient, ReplicatedUsing="OnRep_MegaprojectMesh")
+	UStaticMesh* MegaprojectMesh;
+	UFUNCTION()
+	void OnRep_MegaprojectMesh();
 private:
 	UPROPERTY(Transient)
 	UFGActorRepresentation* cachedRepresentation;

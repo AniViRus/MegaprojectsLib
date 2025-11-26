@@ -66,7 +66,7 @@ public:
 	EMegaprojectInitiationStage mCurrentInitiationStage;
 
 	//A building subclass to associate Megaproject with. Introduced just to make sure you have actually made everything required for buildable to be considered a Megaproject
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Megaproject", meta = (MustImplement = "AVRPMegaprojectInterface", BlueprintBaseOnly))
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Megaproject", meta = (MustImplement = "AVRPMegaprojectInterface", BlueprintBaseOnly))
 	TSubclassOf<AFGBuildableFactory> megaprojectBuild;
 	//Is also called before initializing Megaprojects as an extra sign for Manager building to close UI
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
@@ -76,14 +76,14 @@ public:
 	FOnMegaprojectPhaseChanged OnMegaprojectPhaseChanged;
 
 	//Megaproject phases, as in the amount of states building can be in. When initiated, schematic at index 0 automatically unlocks, its cost doesn't matter.
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Megaproject")
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Megaproject")
 	TArray<FAVRPMegaprojectPhase> megaprojectPhases;
 
 	//Location of the Megaproject's initializer
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Megaproject")
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Megaproject")
 	FTransform MegaprojectStarterLocation;
 	//Location of the Megaproject building
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Megaproject")
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Megaproject")
 	FTransform MegaprojectLocation;
 #if WITH_EDITOR
 	virtual EDataValidationResult IsDataValid(FDataValidationContext& validationContext) const override;
@@ -92,13 +92,18 @@ protected:
 	UFUNCTION()
 	void HandleSchematicPurchased(TSubclassOf<UFGSchematic> schematic);
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, BlueprintAuthorityOnly)
+	//Resolves spawn of Initializers and Megaproject Buildable itself, not meant for calling when state doesn't change or after Megaproject is initiated
 	void ResolveMegaprojectState();
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, BlueprintPure)
 	UStaticMesh* GetPreviewMesh();
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, SaveGame, Replicated, Category = "Megaproject")
 	bool mCurrentDisplayLocation = false;
-	UPROPERTY(BlueprintReadWrite, Replicated, SaveGame)
+	UPROPERTY(BlueprintReadWrite, ReplicatedUsing="OnRep_MegaprojectStarterInstance", SaveGame)
 	AAVRPBuildableMegaprojectStarter* mMegaprojectStarterInstance;
-	UPROPERTY(BlueprintReadWrite, Replicated, SaveGame)
+	UPROPERTY(BlueprintReadWrite, ReplicatedUsing="OnRep_MegaprojectInstance", SaveGame)
 	TScriptInterface<IAVRPMegaprojectInterface> mMegaprojectInstance;
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void OnRep_MegaprojectStarterInstance();
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void OnRep_MegaprojectInstance();
 };

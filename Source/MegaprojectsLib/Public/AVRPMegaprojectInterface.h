@@ -23,10 +23,10 @@ class MEGAPROJECTSLIB_API IAVRPMegaprojectInterface
 public:
 	class AAVRPMegaprojectSubsystemBase;
 	// Acts as level-specific BeginPlay(), called remotely
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Megaproject", BlueprintAuthorityOnly)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Megaproject")
 	void BeginFromLevel(int level);
 	//A lot of vanilla buildables need to have Super::BeginPlay() to get called for proper reconfiguration
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Megaproject", BlueprintAuthorityOnly)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Megaproject")
 	void OnLevelChanged(int level);
 	//Since Megaprojects don't require descriptor, implement building icon for Manager UI here
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Megaproject")

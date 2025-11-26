@@ -13,12 +13,13 @@ void AAVRPBuildableMegaprojectStarter::GetLifetimeReplicatedProps(TArray<FLifeti
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AAVRPBuildableMegaprojectStarter, Display);
 	DOREPLIFETIME(AAVRPBuildableMegaprojectStarter, cachedMegaproject);
+	DOREPLIFETIME(AAVRPBuildableMegaprojectStarter, MegaprojectLocation);
+	DOREPLIFETIME(AAVRPBuildableMegaprojectStarter, MegaprojectMesh);
 }
 
 void AAVRPBuildableMegaprojectStarter::EndPlay(const EEndPlayReason::Type endPlayReason)
 {
 	Super::EndPlay(endPlayReason);
-	if (!HasAuthority()) return;
 	RemoveAsRepresentation();
 }
 
@@ -26,12 +27,11 @@ void AAVRPBuildableMegaprojectStarter::SetupStarter(TSubclassOf<AFGBuildable> me
 {
 	cachedMegaproject = megaproject;
 
-	previewMesh->SetStaticMesh(mesh);
-	for (auto i = 0; i < previewMesh->GetNumMaterials(); i++) {
-		previewMesh->SetMaterial(i, hologramMaterial);
-	}
+	MegaprojectMesh = mesh;
+	OnRep_MegaprojectMesh();
 
-	previewMesh->SetWorldTransform(transform);
+	MegaprojectLocation = transform;
+	OnRep_MegaprojectLocation();
 
 	SetDisplayPreviewPref(DisplayPreviewPref);
 	SetToRepresent(display);
@@ -63,6 +63,19 @@ void AAVRPBuildableMegaprojectStarter::SetDisplayPreviewPref(bool display)
 void AAVRPBuildableMegaprojectStarter::OnRep_Display()
 {
 	UpdateRepresentation();
+}
+
+void AAVRPBuildableMegaprojectStarter::OnRep_MegaprojectLocation()
+{
+	previewMesh->SetWorldTransform(MegaprojectLocation);
+}
+
+void AAVRPBuildableMegaprojectStarter::OnRep_MegaprojectMesh()
+{
+	previewMesh->SetStaticMesh(MegaprojectMesh);
+	for (auto i = 0; i < previewMesh->GetNumMaterials(); i++) {
+		previewMesh->SetMaterial(i, hologramMaterial);
+	}
 }
 
 bool AAVRPBuildableMegaprojectStarter::AddAsRepresentation()

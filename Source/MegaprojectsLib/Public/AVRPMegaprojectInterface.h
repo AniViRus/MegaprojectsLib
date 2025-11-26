@@ -9,15 +9,15 @@
 
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI, BlueprintType, Blueprintable)
-class UAVRPMegaprojectInterface : public UInterface
+class UAVRPMegaprojectInterface : public UFGActorRepresentationInterface
 {
 	GENERATED_BODY()
 };
 
 /**
- * Interface to identify Buildable as a megaproject. Check AVRPBuildableMegaprojectStarter for example of IFGActorRepresentationInterface implementation, it's mandatory
+ * Interface to identify Buildable as a megaproject. Check AVRPBuildableMegaprojectStarter for example of IFGActorRepresentationInterface implementation
  */
-class MEGAPROJECTSLIB_API IAVRPMegaprojectInterface
+class MEGAPROJECTSLIB_API IAVRPMegaprojectInterface : public IFGActorRepresentationInterface
 {
 	GENERATED_BODY()
 public:

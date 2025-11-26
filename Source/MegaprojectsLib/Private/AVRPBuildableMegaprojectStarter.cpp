@@ -131,12 +131,12 @@ FRotator AAVRPBuildableMegaprojectStarter::GetRealActorRotation()
 
 UTexture2D* AAVRPBuildableMegaprojectStarter::GetActorRepresentationTexture()
 {
-	return Cast<IFGActorRepresentationInterface>(cachedMegaproject->GetDefaultObject())->GetActorRepresentationTexture();
+	return Cast<IAVRPMegaprojectInterface>(cachedMegaproject->GetDefaultObject())->GetActorRepresentationTexture();
 }
 
 UMaterialInterface* AAVRPBuildableMegaprojectStarter::GetActorRepresentationCompassMaterial()
 {
-	return Cast<IFGActorRepresentationInterface>(cachedMegaproject->GetDefaultObject())->GetActorRepresentationCompassMaterial();
+	return Cast<IAVRPMegaprojectInterface>(cachedMegaproject->GetDefaultObject())->GetActorRepresentationCompassMaterial();
 }
 
 FText AAVRPBuildableMegaprojectStarter::GetActorRepresentationText()

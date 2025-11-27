@@ -1,9 +1,9 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
-	"VersionName": "1.0.0",
-	"FriendlyName": "MegaprojectsLib",
-	"Description": "Common files and systems for Megaprojects",
+	"VersionName": "1.0.0-pre.1",
+	"FriendlyName": "Megaprojects Library",
+	"Description": "Common files and systems for developing Megaprojects",
 	"Category": "Modding",
 	"CreatedBy": "AniViRus Productions",
 	"CreatedByURL": "",
@@ -25,11 +25,11 @@
 		{
 			"Name": "SML",
 			"Enabled": true,
-			"SemVersion": "^3.11.1"
+			"SemVersion": "^3.11.3"
 		}
 	],
-	"SemVersion": "1.0.0",
-	"GameVersion": ">=416835",
+	"SemVersion": "1.0.0-pre.1",
+	"GameVersion": ">=455399",
 	"LocalizationTargets": [
 		{
 			"Name": "MegaprojectsLib",

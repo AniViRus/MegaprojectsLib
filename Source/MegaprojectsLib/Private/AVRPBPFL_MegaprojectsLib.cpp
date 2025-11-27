@@ -4,6 +4,8 @@
 #include "AVRPMegaprojectInterface.h"
 #include "AVRPMegaprojectSubsystemBase.h"
 #include "FGSchematicManager.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "Kismet/GameplayStatics.h"
 
 
 void UAVRPBPFL_MegaprojectsLib::Factory_PayoffOnMegagproject(AFGBuildable* buildable, TArray<UFGFactoryConnectionComponent*> connections)
@@ -40,8 +42,21 @@ void UAVRPBPFL_MegaprojectsLib::Factory_PayoffOnMegagproject(AFGBuildable* build
 AAVRPMegaprojectSubsystemBase* UAVRPBPFL_MegaprojectsLib::GetSubsystemOfByInstance(AFGBuildable* buildable)
 {
 	auto schematicManager = AAVRPMegaprojectsManager::Get(buildable);
+	if (!IsValid(schematicManager)) return nullptr;
 	for (auto megaproject : schematicManager->GetMegaprojects()) {
 		if (megaproject->mMegaprojectInstance == buildable) {
+			return megaproject;
+		}
+	}
+	return nullptr;
+}
+
+AAVRPMegaprojectSubsystemBase* UAVRPBPFL_MegaprojectsLib::GetSubsystemOf(AFGBuildable* buildable)
+{
+	auto schematicManager = AAVRPMegaprojectsManager::Get(buildable);
+	if (!IsValid(schematicManager)) return nullptr;
+	for (auto megaproject : schematicManager->GetMegaprojects()) {
+		if (UKismetMathLibrary::EqualEqual_ClassClass(megaproject->megaprojectBuild, UGameplayStatics::GetObjectClass(buildable))) {
 			return megaproject;
 		}
 	}

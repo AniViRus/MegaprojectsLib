@@ -21,8 +21,9 @@ public:
 	// Manager getter
 	UFUNCTION(BlueprintPure, Category = "Megaprojects", Meta = (DefaultToSelf = "worldContext", DisplayName = "Get Megaprojects Manager"))
 	static AAVRPMegaprojectsManager* Get(const UObject* worldContext);
-	//Call in base subsystems' BeginPlay (and EndPlay if that ever happens)
+	//Call in base subsystems' BeginPlay
 	void RegisterMegaprojectSubsystem(AAVRPMegaprojectSubsystemBase* subsystem);
+	//Call in base subsystems' EndPlay if that ever happens
 	void UnregisterMegaprojectSubsystem(AAVRPMegaprojectSubsystemBase* subsystem);
 	UFUNCTION(BlueprintCallable)
 	TArray<AAVRPMegaprojectSubsystemBase*> GetMegaprojects();

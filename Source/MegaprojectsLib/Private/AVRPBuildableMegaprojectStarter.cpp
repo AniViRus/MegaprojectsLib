@@ -141,6 +141,7 @@ UMaterialInterface* AAVRPBuildableMegaprojectStarter::GetActorRepresentationComp
 
 FText AAVRPBuildableMegaprojectStarter::GetActorRepresentationText()
 {
+	//Doesn't ignore localizations
 	return FText::FromString(FString::Format(TEXT("{0}: {1}"), { mDisplayName.ToString(), cachedMegaproject.GetDefaultObject()->mDisplayName.ToString()}));
 }
 

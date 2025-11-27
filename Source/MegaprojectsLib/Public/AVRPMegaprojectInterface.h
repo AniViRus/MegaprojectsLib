@@ -22,10 +22,10 @@ class MEGAPROJECTSLIB_API IAVRPMegaprojectInterface : public IFGActorRepresentat
 	GENERATED_BODY()
 public:
 	class AAVRPMegaprojectSubsystemBase;
-	// Acts as level-specific BeginPlay(), called remotely
+	// Called on Megaproject's spawn, use to reconfigure the building
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Megaproject")
 	void BeginFromLevel(int level);
-	//A lot of vanilla buildables need to have Super::BeginPlay() to get called for proper reconfiguration
+	// Called on Megaproject's level changing to reconfigure it
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Megaproject")
 	void OnLevelChanged(int level);
 	//Since Megaprojects don't require descriptor, implement building icon for Manager UI here

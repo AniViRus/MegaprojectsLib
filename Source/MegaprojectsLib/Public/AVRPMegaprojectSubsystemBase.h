@@ -53,12 +53,14 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	int GetCurrentLevel();
 
+	// Get current phase schematic, if any
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	TSubclassOf<UFGSchematic> GetCurrentSchematic();
+
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	bool IsFinished();
 
-	// Locks Megaproject if it is unlocked and wasn't initiated yet. Use it for your own gimmicks (i.e. You have 3 options for Megaproject's location (3 Megaprojects), initiating one locks others) - recommended calling outside of subsystems themselves
+	// Locks Megaproject if it is unlocked and wasn't initiated yet. Use it for your own gimmicks (i.e. You have 3 options for Megaproject's location (3 Megaprojects), initiating one locks others) - recommended calling outside of subsystems themselves by subscribing to OnMegaprojectPhaseResolved
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, BlueprintAuthorityOnly)
 	bool LockMegaproject();
 
@@ -71,7 +73,11 @@ public:
 	//A building subclass to associate Megaproject with. Introduced just to make sure you have actually made everything required for buildable to be considered a Megaproject
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Megaproject", meta = (MustImplement = "AVRPMegaprojectInterface", BlueprintBaseOnly))
 	TSubclassOf<AFGBuildableFactory> megaprojectBuild;
-	//Is also called before initializing Megaprojects as an extra sign for Manager building to close UI
+
+	//If you want to override Megaproject Starter class without overhauling entire subsystem, do it here. If set to nullptr, falls back to default starter
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Megaproject", meta = (BlueprintBaseOnly))
+	TSubclassOf<AAVRPBuildableMegaprojectStarter> megaprojectStarterClass;
+
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FOnMegaprojectStageResolved OnMegaprojectStageResolved;
 
@@ -101,6 +107,7 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, BlueprintAuthorityOnly)
 	//Resolves spawn of Initializers and Megaproject Buildable itself, not meant for calling when state doesn't change or after Megaproject is initiated
 	void ResolveMegaprojectState();
+	// What mesh will Initializer show off
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, BlueprintPure)
 	UStaticMesh* GetPreviewMesh();
 	UPROPERTY(BlueprintReadWrite, SaveGame, Replicated, Category = "Megaproject")

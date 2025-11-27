@@ -22,13 +22,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual void SetupStarter(TSubclassOf<AFGBuildable> megaproject, UStaticMesh* mesh, FTransform transform, bool display);
 	UFUNCTION(BlueprintCallable)
-	void InitiateMegaproject();
+	virtual void InitiateMegaproject();
 	UFUNCTION(BlueprintCallable)
-	void SetToRepresent(bool display);
+	virtual void SetToRepresent(bool display);
 	UFUNCTION(BlueprintCallable)
-	void SetToRepresentPref(bool display);
+	virtual void SetToRepresentPref(bool display);
 	UFUNCTION(BlueprintCallable)
-	void SetDisplayPreviewPref(bool display);
+	virtual void SetDisplayPreviewPref(bool display);
 	UPROPERTY(BlueprintReadWrite)
 	FOnInitiationRequested OnInitiationRequested;
 protected:
@@ -45,15 +45,15 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Transient, Replicated)
 	TSubclassOf<AFGBuildable> cachedMegaproject;
 	UFUNCTION()
-	void OnRep_Display();
+	virtual void OnRep_Display();
 	UPROPERTY(BlueprintReadOnly, Transient, ReplicatedUsing="OnRep_MegaprojectLocation")
 	FTransform MegaprojectLocation;
 	UFUNCTION()
-	void OnRep_MegaprojectLocation();
+	virtual void OnRep_MegaprojectLocation();
 	UPROPERTY(BlueprintReadOnly, Transient, ReplicatedUsing="OnRep_MegaprojectMesh")
 	UStaticMesh* MegaprojectMesh;
 	UFUNCTION()
-	void OnRep_MegaprojectMesh();
+	virtual void OnRep_MegaprojectMesh();
 private:
 	UPROPERTY(Transient)
 	UFGActorRepresentation* cachedRepresentation;

@@ -15,6 +15,8 @@ class MEGAPROJECTSLIB_API UAVRPBPFL_MegaprojectsLib : public UBlueprintFunctionL
 	GENERATED_BODY()
 public:
 	//I suggest to copy code out of here into your own implementations for performance and reduction of unnecessary checks
+	UFUNCTION()
+	static void Factory_PayoffOnMegagproject(AFGBuildable* buildable, TArray<UFGFactoryConnectionComponent*> connections);
 	UFUNCTION(BlueprintCallable)
-	static void Factory_PayoffOnMegagproject(AFGBuildable* buildable, AAVRPMegaprojectSubsystemBase* megaproject, TArray<UFGFactoryConnectionComponent*> connections);
+	static AAVRPMegaprojectSubsystemBase* GetSubsystemOfByInstance(AFGBuildable* buildable);
 };

@@ -126,7 +126,7 @@ FVector AAVRPBuildableMegaprojectStarter::GetRealActorLocation()
 
 FRotator AAVRPBuildableMegaprojectStarter::GetRealActorRotation()
 {
-	return GetActorRotation();
+	return FRotator::ZeroRotator;
 }
 
 UTexture2D* AAVRPBuildableMegaprojectStarter::GetActorRepresentationTexture()

@@ -1,15 +1,16 @@
 #include "AVRPBPFL_MegaprojectsLib.h"
 #include "FGBuildable.h"
+#include "AVRPMegaprojectsManager.h"
 #include "AVRPMegaprojectInterface.h"
 #include "AVRPMegaprojectSubsystemBase.h"
 #include "FGSchematicManager.h"
 
 
-void UAVRPBPFL_MegaprojectsLib::Factory_PayoffOnMegagproject(AFGBuildable* buildable, AAVRPMegaprojectSubsystemBase* megaproject, TArray<UFGFactoryConnectionComponent*> connections)
+void UAVRPBPFL_MegaprojectsLib::Factory_PayoffOnMegagproject(AFGBuildable* buildable, TArray<UFGFactoryConnectionComponent*> connections)
 {
-	if (!buildable->HasAuthority()) return;
+	auto megaproject = GetSubsystemOfByInstance(buildable);
+	if (!buildable->HasAuthority() || !IsValid(megaproject) || megaproject->IsFinished()) return;
 	auto schematic = megaproject->GetCurrentSchematic();
-	if (!IsValid(schematic)) return;
 	auto schematicManager = AFGSchematicManager::Get(buildable);
 	for (auto connection : connections) {
 		TArray<FInventoryItem> items;
@@ -18,7 +19,7 @@ void UAVRPBPFL_MegaprojectsLib::Factory_PayoffOnMegagproject(AFGBuildable* build
 				auto remainingCost = schematicManager->GetRemainingCostFor(schematic);
 				auto hasItem = false;
 				for (auto itemAmount : remainingCost) {
-					if (itemAmount.ItemClass == items[0].GetItemClass()) {
+					if (itemAmount.ItemClass == items[0].GetItemClass() && itemAmount.Amount > 0) {
 						hasItem = true;
 						break;
 					}
@@ -34,4 +35,15 @@ void UAVRPBPFL_MegaprojectsLib::Factory_PayoffOnMegagproject(AFGBuildable* build
 			}
 		}
 	}
+}
+
+AAVRPMegaprojectSubsystemBase* UAVRPBPFL_MegaprojectsLib::GetSubsystemOfByInstance(AFGBuildable* buildable)
+{
+	auto schematicManager = AAVRPMegaprojectsManager::Get(buildable);
+	for (auto megaproject : schematicManager->GetMegaprojects()) {
+		if (megaproject->mMegaprojectInstance == buildable) {
+			return megaproject;
+		}
+	}
+	return nullptr;
 }

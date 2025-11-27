@@ -56,6 +56,15 @@ bool AAVRPMegaprojectSubsystemBase::IsFinished()
 	return GetCurrentPhase() >= megaprojectPhases.Num();
 }
 
+void AAVRPMegaprojectSubsystemBase::RevealLocation()
+{
+	if (mCurrentDisplayLocation) return;
+	mCurrentDisplayLocation = true;
+	if (IsValid(mMegaprojectStarterInstance)) {
+		mMegaprojectStarterInstance->SetToRepresent(true);
+	}
+}
+
 void AAVRPMegaprojectSubsystemBase::HandleSchematicPurchased(TSubclassOf<UFGSchematic> schematic)
 {
 	if (!HasAuthority()) return;

@@ -62,6 +62,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, BlueprintAuthorityOnly)
 	bool LockMegaproject();
 
+	UFUNCTION(BlueprintCallable)
+	void RevealLocation();
+
 	UPROPERTY(BlueprintReadWrite, SaveGame, Replicated)
 	EMegaprojectInitiationStage mCurrentInitiationStage;
 
@@ -85,6 +88,10 @@ public:
 	//Location of the Megaproject building
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Megaproject")
 	FTransform MegaprojectLocation;
+	UPROPERTY(BlueprintReadWrite, ReplicatedUsing = "OnRep_MegaprojectStarterInstance", SaveGame)
+	AAVRPBuildableMegaprojectStarter* mMegaprojectStarterInstance;
+	UPROPERTY(BlueprintReadWrite, ReplicatedUsing = "OnRep_MegaprojectInstance", SaveGame)
+	TScriptInterface<IAVRPMegaprojectInterface> mMegaprojectInstance;
 #if WITH_EDITOR
 	virtual EDataValidationResult IsDataValid(FDataValidationContext& validationContext) const override;
 #endif
@@ -96,12 +103,8 @@ protected:
 	void ResolveMegaprojectState();
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, BlueprintPure)
 	UStaticMesh* GetPreviewMesh();
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, SaveGame, Replicated, Category = "Megaproject")
+	UPROPERTY(BlueprintReadWrite, SaveGame, Replicated, Category = "Megaproject")
 	bool mCurrentDisplayLocation = false;
-	UPROPERTY(BlueprintReadWrite, ReplicatedUsing="OnRep_MegaprojectStarterInstance", SaveGame)
-	AAVRPBuildableMegaprojectStarter* mMegaprojectStarterInstance;
-	UPROPERTY(BlueprintReadWrite, ReplicatedUsing="OnRep_MegaprojectInstance", SaveGame)
-	TScriptInterface<IAVRPMegaprojectInterface> mMegaprojectInstance;
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void OnRep_MegaprojectStarterInstance();
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)

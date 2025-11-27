@@ -94,6 +94,8 @@ public:
 	//Location of the Megaproject building
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Megaproject")
 	FTransform MegaprojectLocation;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Megaproject")
+	UStaticMesh* PreviewMesh;
 	UPROPERTY(BlueprintReadWrite, ReplicatedUsing = "OnRep_MegaprojectStarterInstance", SaveGame)
 	AAVRPBuildableMegaprojectStarter* mMegaprojectStarterInstance;
 	UPROPERTY(BlueprintReadWrite, ReplicatedUsing = "OnRep_MegaprojectInstance", SaveGame)
@@ -108,8 +110,6 @@ protected:
 	//Resolves spawn of Initializers and Megaproject Buildable itself, not meant for calling when state doesn't change or after Megaproject is initiated
 	void ResolveMegaprojectState();
 	// What mesh will Initializer show off
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, BlueprintPure)
-	UStaticMesh* GetPreviewMesh();
 	UPROPERTY(BlueprintReadWrite, SaveGame, Replicated, Category = "Megaproject")
 	bool mCurrentDisplayLocation = false;
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Unlocks/FGUnlock.h"
+#include "Unlocks/FGUnlockInfoOnly.h"
 #include "AVRPMegaprojectSubsystemBase.h"
 #include "AVRPUnlockMegaproject.generated.h"
 
@@ -11,7 +11,7 @@
  * displayStarterLocation is for gimmick including megaprojects (World Radar's Initializer won't reveal location at first, but player can find it earlier)
  */
 UCLASS( Blueprintable, EditInlineNew, Abstract, DefaultToInstanced )
-class MEGAPROJECTSLIB_API UAVRPUnlockMegaproject : public UFGUnlock
+class MEGAPROJECTSLIB_API UAVRPUnlockMegaproject : public UFGUnlockInfoOnly
 {
 	GENERATED_BODY()
 public:

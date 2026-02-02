@@ -42,6 +42,7 @@ class MEGAPROJECTSLIB_API AAVRPMegaprojectSubsystemBase : public AModSubsystem, 
 	GENERATED_BODY()
 public:
 	friend class AAVRPBuildableMegaprojectStarter;
+	friend class UAVRPBPWMegaprojectsManagerEntry;
 	virtual void BeginPlay() override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void EndPlay(const EEndPlayReason::Type endPlayReason) override;
@@ -75,9 +76,9 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Megaproject", meta = (BlueprintBaseOnly))
 	TSubclassOf<AAVRPBuildableMegaprojectStarter> megaprojectStarterClass;
 
-	//A class used to construct 
+	//A class used to represent Megaproject in the manager
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Megaproject", meta = (BlueprintBaseOnly))
-	TSubclassOf<UWidget> megaprojectManagerEntryClass;
+	TSubclassOf<UAVRPBPWMegaprojectsManagerEntry> megaprojectManagerEntryClass;
 
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FOnMegaprojectStageResolved OnMegaprojectStageResolved;

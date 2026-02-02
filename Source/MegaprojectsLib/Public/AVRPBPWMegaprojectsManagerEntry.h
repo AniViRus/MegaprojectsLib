@@ -1,9 +1,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UI/FGUserWidget.h"
-#include "AVRPMegaprojectSubsystemBase.h"
 #include "AVRPBPWMegaprojectsManagerEntry.generated.h"
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMegaprojectEntryClicked, UAVRPBPWMegaprojectsManagerEntry*, Entry);
 
 /**
  * A class representing entry in Megaprojecets Manager widget
@@ -38,7 +38,10 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, meta = (ForceAsFunction))
 	FText GetCurLevelText();
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, meta = (ForceAsFunction))
-	TArray<UFGUserWidget*> GetPayoffSlots();
+	TArray<UWidget*> GetPayoffSlots();
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+	FOnMegaprojectEntryClicked OnMegaprojectEntryClicked;
 protected:
 	UPROPERTY(BlueprintReadWrite, meta=(BlueprintBaseOnly))
 	AAVRPMegaprojectSubsystemBase* cachedSubsystem;

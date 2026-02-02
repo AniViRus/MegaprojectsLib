@@ -9,6 +9,7 @@
 #include "FGSaveInterface.h"
 #include "AVRPMegaprojectInterface.h"
 #include "AVRPBuildableMegaprojectStarter.h"
+#include "AVRPBPWMegaprojectsManagerEntry.h"
 #include "AVRPMegaprojectSubsystemBase.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMegaprojectPhaseChanged, int, NewLevel);
@@ -42,7 +43,6 @@ class MEGAPROJECTSLIB_API AAVRPMegaprojectSubsystemBase : public AModSubsystem, 
 	GENERATED_BODY()
 public:
 	friend class AAVRPBuildableMegaprojectStarter;
-	friend class UAVRPBPWMegaprojectsManagerEntry;
 	virtual void BeginPlay() override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void EndPlay(const EEndPlayReason::Type endPlayReason) override;

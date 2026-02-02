@@ -12,11 +12,6 @@ void UAVRPRCO_MegaprojectsLib::GiveAccessToSchematicRPC_Implementation(TSubclass
 	AFGSchematicManager::Get(GetWorld())->GiveAccessToSchematic(schematic, nullptr);
 }
 
-void UAVRPRCO_MegaprojectsLib::SetDisplayRPC_Implementation(AAVRPBuildableMegaprojectStarter* context, bool display)
-{
-	context->SetToRepresent(display);
-}
-
 void UAVRPRCO_MegaprojectsLib::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);

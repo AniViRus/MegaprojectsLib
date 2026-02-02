@@ -64,9 +64,6 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, BlueprintAuthorityOnly)
 	bool LockMegaproject();
 
-	UFUNCTION(BlueprintCallable)
-	void RevealLocation();
-
 	UPROPERTY(BlueprintReadWrite, SaveGame, Replicated)
 	EMegaprojectInitiationStage mCurrentInitiationStage;
 
@@ -77,6 +74,10 @@ public:
 	//If you want to override Megaproject Starter class without overhauling entire subsystem, do it here. If set to nullptr, falls back to default starter
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Megaproject", meta = (BlueprintBaseOnly))
 	TSubclassOf<AAVRPBuildableMegaprojectStarter> megaprojectStarterClass;
+
+	//A class used to construct 
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Megaproject", meta = (BlueprintBaseOnly))
+	TSubclassOf<UWidget> megaprojectManagerEntryClass;
 
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FOnMegaprojectStageResolved OnMegaprojectStageResolved;
@@ -109,9 +110,6 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, BlueprintAuthorityOnly)
 	//Resolves spawn of Initializers and Megaproject Buildable itself, not meant for calling when state doesn't change or after Megaproject is initiated
 	void ResolveMegaprojectState();
-	// What mesh will Initializer show off
-	UPROPERTY(BlueprintReadWrite, SaveGame, Replicated, Category = "Megaproject")
-	bool mCurrentDisplayLocation = false;
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void OnRep_MegaprojectStarterInstance();
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)

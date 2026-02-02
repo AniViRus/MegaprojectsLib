@@ -17,6 +17,4 @@ class MEGAPROJECTSLIB_API UAVRPUnlockMegaproject : public UFGUnlockInfoOnly
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(BlueprintBaseOnly))
 	TSubclassOf<AAVRPMegaprojectSubsystemBase> megaproject;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	bool displayStarterLocation = true;
 };

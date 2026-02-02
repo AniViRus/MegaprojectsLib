@@ -17,7 +17,6 @@ void AAVRPMegaprojectSubsystemBase::GetLifetimeReplicatedProps(TArray<FLifetimeP
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AAVRPMegaprojectSubsystemBase, mCurrentInitiationStage);
-	DOREPLIFETIME(AAVRPMegaprojectSubsystemBase, mCurrentDisplayLocation);
 	DOREPLIFETIME(AAVRPMegaprojectSubsystemBase, mMegaprojectStarterInstance);
 	DOREPLIFETIME(AAVRPMegaprojectSubsystemBase, mMegaprojectInstance);
 }
@@ -54,15 +53,6 @@ TSubclassOf<UFGSchematic> AAVRPMegaprojectSubsystemBase::GetCurrentSchematic()
 bool AAVRPMegaprojectSubsystemBase::IsFinished()
 {
 	return GetCurrentPhase() >= megaprojectPhases.Num();
-}
-
-void AAVRPMegaprojectSubsystemBase::RevealLocation()
-{
-	if (mCurrentDisplayLocation) return;
-	mCurrentDisplayLocation = true;
-	if (IsValid(mMegaprojectStarterInstance)) {
-		mMegaprojectStarterInstance->SetToRepresent(true);
-	}
 }
 
 void AAVRPMegaprojectSubsystemBase::HandleSchematicPurchased(TSubclassOf<UFGSchematic> schematic)

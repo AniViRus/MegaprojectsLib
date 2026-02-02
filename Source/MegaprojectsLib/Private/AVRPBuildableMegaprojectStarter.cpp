@@ -11,7 +11,6 @@ AAVRPBuildableMegaprojectStarter::AAVRPBuildableMegaprojectStarter()
 void AAVRPBuildableMegaprojectStarter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME(AAVRPBuildableMegaprojectStarter, Display);
 	DOREPLIFETIME(AAVRPBuildableMegaprojectStarter, cachedMegaproject);
 	DOREPLIFETIME(AAVRPBuildableMegaprojectStarter, MegaprojectLocation);
 	DOREPLIFETIME(AAVRPBuildableMegaprojectStarter, MegaprojectMesh);
@@ -23,7 +22,7 @@ void AAVRPBuildableMegaprojectStarter::EndPlay(const EEndPlayReason::Type endPla
 	RemoveAsRepresentation();
 }
 
-void AAVRPBuildableMegaprojectStarter::SetupStarter(TSubclassOf<AFGBuildable> megaproject, UStaticMesh* mesh, FTransform transform, bool display)
+void AAVRPBuildableMegaprojectStarter::SetupStarter(TSubclassOf<AFGBuildable> megaproject, UStaticMesh* mesh, FTransform transform)
 {
 	cachedMegaproject = megaproject;
 
@@ -34,18 +33,12 @@ void AAVRPBuildableMegaprojectStarter::SetupStarter(TSubclassOf<AFGBuildable> me
 	OnRep_MegaprojectLocation();
 
 	SetDisplayPreviewPref(DisplayPreviewPref);
-	SetToRepresent(display);
+	SetToRepresentPref(DisplayPref);
 }
 
 void AAVRPBuildableMegaprojectStarter::InitiateMegaproject()
 {
 	OnInitiationRequested.ExecuteIfBound();
-}
-
-void AAVRPBuildableMegaprojectStarter::SetToRepresent(bool display)
-{
-	Display |= display;
-	UpdateRepresentation();
 }
 
 void AAVRPBuildableMegaprojectStarter::SetToRepresentPref(bool display)
@@ -92,10 +85,10 @@ bool AAVRPBuildableMegaprojectStarter::UpdateRepresentation()
 {
 	//Call whenever you need to update what is displayed on the map for your building. For that call UpdateRepresentation
 	if (auto manager = AFGActorRepresentationManager::Get(this)) {
-		if ((!Display || !DisplayPref) && IsValid(cachedRepresentation)) {
+		if (!DisplayPref && IsValid(cachedRepresentation)) {
 			RemoveAsRepresentation();
 		}
-		else if (Display && DisplayPref && !IsValid(cachedRepresentation)) {
+		else if (DisplayPref && !IsValid(cachedRepresentation)) {
 			AddAsRepresentation();
 		}
 		if (IsValid(cachedRepresentation)) manager->UpdateRepresentation(cachedRepresentation);
@@ -164,13 +157,13 @@ ERepresentationType AAVRPBuildableMegaprojectStarter::GetActorRepresentationType
 bool AAVRPBuildableMegaprojectStarter::GetActorShouldShowInCompass()
 {
 	//Behaviour may be unpredictable, so I'd advice to instead show/hide icon by creating/removing representations 
-	return Display;
+	return DisplayPref;
 }
 
 bool AAVRPBuildableMegaprojectStarter::GetActorShouldShowOnMap()
 {
 	//Behaviour may be unpredictable, so I'd advice to instead show/hide icon by creating/removing representations 
-	return Display;
+	return DisplayPref;
 }
 
 EFogOfWarRevealType AAVRPBuildableMegaprojectStarter::GetActorFogOfWarRevealType()

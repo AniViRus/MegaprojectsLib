@@ -20,11 +20,9 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void EndPlay(const EEndPlayReason::Type endPlayReason) override;
 	UFUNCTION(BlueprintCallable)
-	virtual void SetupStarter(TSubclassOf<AFGBuildable> megaproject, UStaticMesh* mesh, FTransform transform, bool display);
+	virtual void SetupStarter(TSubclassOf<AFGBuildable> megaproject, UStaticMesh* mesh, FTransform transform);
 	UFUNCTION(BlueprintCallable)
 	virtual void InitiateMegaproject();
-	UFUNCTION(BlueprintCallable)
-	virtual void SetToRepresent(bool display);
 	UFUNCTION(BlueprintCallable)
 	virtual void SetToRepresentPref(bool display);
 	UFUNCTION(BlueprintCallable)
@@ -32,8 +30,6 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	FOnInitiationRequested OnInitiationRequested;
 protected:
-	UPROPERTY(BlueprintReadOnly, SaveGame, ReplicatedUsing = "OnRep_Display")
-	bool Display;
 	UPROPERTY(BlueprintReadOnly, SaveGame)
 	bool DisplayPref = true;
 	UPROPERTY(BlueprintReadOnly, SaveGame)

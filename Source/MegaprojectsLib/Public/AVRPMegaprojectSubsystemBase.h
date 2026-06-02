@@ -61,9 +61,15 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	bool IsFinished();
 
-	// Locks Megaproject if it is unlocked and wasn't initiated yet. Use it for your own gimmicks (i.e. You have 3 options for Megaproject's location (3 Megaprojects), initiating one locks others) - recommended calling outside of subsystems themselves by subscribing to OnMegaprojectPhaseResolved
+	// Locks Megaproject if it is unlocked and wasn't initiated yet. Custom implementation is expected to be similar to library Blueprint Base class
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, BlueprintAuthorityOnly)
 	bool LockMegaproject();
+	// Unlocks Megaproject if it wasn't initiated yet. Called from Unlock Subsystem. Custom implementation is expected to be similar to library Blueprint Base class
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, BlueprintAuthorityOnly)
+	bool UnlockMegaproject();
+	// Initializes Megaproject if unlocked and not initiated yet. Custom implementation is expected to be similar to library Blueprint Base class
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, BlueprintAuthorityOnly)
+	bool InitializeMegaproject();
 
 	UPROPERTY(BlueprintReadWrite, SaveGame, Replicated)
 	EMegaprojectInitiationStage mCurrentInitiationStage;
@@ -109,7 +115,7 @@ protected:
 	UFUNCTION()
 	void HandleSchematicPurchased(TSubclassOf<UFGSchematic> schematic);
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, BlueprintAuthorityOnly)
-	//Resolves spawn of Initializers and Megaproject Buildable itself, not meant for calling when state doesn't change or after Megaproject is initiated
+	//Resolves Megaproject setup from its state whenever current state of project changes, called manually
 	void ResolveMegaprojectState();
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void OnRep_MegaprojectStarterInstance();

@@ -1,6 +1,6 @@
 #include "AVRPRCO_MegaprojectsLib.h"
 #include "FGSchematicManager.h"
-#include "UnrealNetwork.h"
+#include "Net/UnrealNetwork.h"
 
 void UAVRPRCO_MegaprojectsLib::InitiateMegaprojectRPC_Implementation(AAVRPBuildableMegaprojectStarter* context)
 {

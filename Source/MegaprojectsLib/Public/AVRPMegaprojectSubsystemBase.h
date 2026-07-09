@@ -5,7 +5,7 @@
 #include "FGInventoryComponent.h"
 #include "Subsystem/ModSubsystem.h"
 #include "FGFactoryConnectionComponent.h"
-#include "FGBuildableFactory.h"
+#include "Buildables/FGBuildableFactory.h"
 #include "FGSaveInterface.h"
 #include "AVRPMegaprojectInterface.h"
 #include "AVRPBuildableMegaprojectStarter.h"
@@ -103,9 +103,9 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Megaproject")
 	FTransform MegaprojectLocation;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Megaproject")
-	UStaticMesh* PreviewMesh;
+	TObjectPtr<UStaticMesh> PreviewMesh;
 	UPROPERTY(BlueprintReadWrite, ReplicatedUsing = "OnRep_MegaprojectStarterInstance", SaveGame)
-	AAVRPBuildableMegaprojectStarter* mMegaprojectStarterInstance;
+	TObjectPtr<AAVRPBuildableMegaprojectStarter> mMegaprojectStarterInstance;
 	UPROPERTY(BlueprintReadWrite, ReplicatedUsing = "OnRep_MegaprojectInstance", SaveGame)
 	TScriptInterface<IAVRPMegaprojectInterface> mMegaprojectInstance;
 #if WITH_EDITOR

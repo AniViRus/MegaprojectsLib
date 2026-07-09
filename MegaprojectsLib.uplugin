@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
-	"VersionName": "1.0.2",
+	"VersionName": "1.1.0",
 	"FriendlyName": "Megaprojects Library",
 	"Description": "Common files and systems for developing Megaprojects",
 	"Category": "Modding",
@@ -25,15 +25,16 @@
 		{
 			"Name": "SML",
 			"Enabled": true,
-			"SemVersion": "^3.11.3"
+			"SemVersion": "^3.12.0"
 		}
 	],
-	"SemVersion": "1.0.2",
-	"GameVersion": ">=455399",
+	"SemVersion": "1.1.0",
+	"GameVersion": ">=491125",
 	"LocalizationTargets": [
 		{
 			"Name": "MegaprojectsLib",
-			"LoadingPolicy": "Always"
+			"LoadingPolicy": "Always",
+			"ConfigGenerationPolicy": "Never"
 		}
 	]
 }

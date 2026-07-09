@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "FGBuildable.h"
+#include "Buildables/FGBuildable.h"
 #include "FGSaveInterface.h"
 #include "Subsystem/ModSubsystem.h"
 #include "AVRPMegaprojectSubsystemBase.h"
@@ -33,9 +33,9 @@ public:
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FOnTrackedMegaprojectChanged OnTrackedMegaprojectChanged;
 	UPROPERTY(BlueprintReadOnly, SaveGame)
-	AAVRPMegaprojectSubsystemBase* trackedSubsystem;
+	TObjectPtr<AAVRPMegaprojectSubsystemBase> trackedSubsystem;
 protected:
 	// List of subsystems
 	UPROPERTY()
-	TArray <AAVRPMegaprojectSubsystemBase*> mSubsystems = TArray<AAVRPMegaprojectSubsystemBase*>();
+	TArray <TObjectPtr<AAVRPMegaprojectSubsystemBase>> mSubsystems = TArray<TObjectPtr<AAVRPMegaprojectSubsystemBase>>();
 };

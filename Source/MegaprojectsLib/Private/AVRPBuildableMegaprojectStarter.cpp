@@ -1,7 +1,7 @@
 #include "AVRPBuildableMegaprojectStarter.h"
 #include "FGActorRepresentationInterface.h"
 #include "FGActorRepresentationManager.h"
-#include "UnrealNetwork.h"
+#include "Net/UnrealNetwork.h"
 
 AAVRPBuildableMegaprojectStarter::AAVRPBuildableMegaprojectStarter()
 {
@@ -183,13 +183,13 @@ ECompassViewDistance AAVRPBuildableMegaprojectStarter::GetActorCompassViewDistan
 
 void AAVRPBuildableMegaprojectStarter::SetActorCompassViewDistance(ECompassViewDistance compassViewDistance){}
 
-TArray<FLocalUserNetIdBundle> AAVRPBuildableMegaprojectStarter::GetLastEditedBy() const
+FPlayerInfoHandle AAVRPBuildableMegaprojectStarter::GetLastEditedBy() const
 {
 	//Can do nothing
-	return TArray<FLocalUserNetIdBundle>();
+	return FPlayerInfoHandle();
 }
 
-void AAVRPBuildableMegaprojectStarter::SetActorLastEditedBy(const TArray<FLocalUserNetIdBundle>& LastEditedBy)
+void AAVRPBuildableMegaprojectStarter::SetActorLastEditedByHandle(const FPlayerInfoHandle& LastEditedBy)
 {
 	//Can do nothing
 }

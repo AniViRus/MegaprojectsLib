@@ -1,5 +1,5 @@
 #include "AVRPBPFL_MegaprojectsLib.h"
-#include "FGBuildable.h"
+#include "Buildables/FGBuildable.h"
 #include "AVRPMegaprojectsManager.h"
 #include "AVRPMegaprojectInterface.h"
 #include "AVRPMegaprojectSubsystemBase.h"
@@ -61,4 +61,9 @@ AAVRPMegaprojectSubsystemBase* UAVRPBPFL_MegaprojectsLib::GetSubsystemOf(AFGBuil
 		}
 	}
 	return nullptr;
+}
+
+void UAVRPBPFL_MegaprojectsLib::ExecutePlayBuildEffects(AFGBuildable* buildable)
+{
+	buildable->ExecutePlayBuildEffects();
 }

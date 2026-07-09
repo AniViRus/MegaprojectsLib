@@ -44,5 +44,5 @@ public:
 	FOnMegaprojectEntryClicked OnMegaprojectEntryClicked;
 protected:
 	UPROPERTY(BlueprintReadWrite, meta=(BlueprintBaseOnly))
-	AAVRPMegaprojectSubsystemBase* cachedSubsystem;
+	TObjectPtr<AAVRPMegaprojectSubsystemBase> cachedSubsystem;
 };

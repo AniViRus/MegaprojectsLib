@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "FGBuildableFactory.h"
+#include "Buildables/FGBuildableFactory.h"
 #include "AVRPMegaprojectSubsystemBase.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "AVRPBPFL_MegaprojectsLib.generated.h"
@@ -21,4 +21,6 @@ public:
 	static AAVRPMegaprojectSubsystemBase* GetSubsystemOfByInstance(AFGBuildable* buildable);
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static AAVRPMegaprojectSubsystemBase* GetSubsystemOf(AFGBuildable* buildable);
+	UFUNCTION(BlueprintCallable)
+	static void ExecutePlayBuildEffects(AFGBuildable* buildable);
 };

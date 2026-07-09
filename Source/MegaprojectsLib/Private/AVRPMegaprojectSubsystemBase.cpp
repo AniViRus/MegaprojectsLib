@@ -2,7 +2,7 @@
 #include "AVRPMegaprojectsManager.h"
 #include "AVRPUnlockMegaproject.h"
 #include "FGSchematicManager.h"
-#include "UnrealNetwork.h"
+#include "Net/UnrealNetwork.h"
 
 void AAVRPMegaprojectSubsystemBase::BeginPlay()
 {

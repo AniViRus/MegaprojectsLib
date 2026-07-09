@@ -35,9 +35,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly, SaveGame)
 	bool DisplayPreviewPref = true;
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	UStaticMeshComponent* previewMesh;
+	TObjectPtr<UStaticMeshComponent> previewMesh;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	UMaterialInstance* hologramMaterial;
+	TObjectPtr<UMaterialInstance> hologramMaterial;
 	UPROPERTY(BlueprintReadOnly, Transient, Replicated)
 	TSubclassOf<AFGBuildable> cachedMegaproject;
 	UFUNCTION()
@@ -47,12 +47,12 @@ protected:
 	UFUNCTION()
 	virtual void OnRep_MegaprojectLocation();
 	UPROPERTY(BlueprintReadOnly, Transient, ReplicatedUsing="OnRep_MegaprojectMesh")
-	UStaticMesh* MegaprojectMesh;
+	TObjectPtr<UStaticMesh> MegaprojectMesh;
 	UFUNCTION()
 	virtual void OnRep_MegaprojectMesh();
 private:
 	UPROPERTY(Transient)
-	UFGActorRepresentation* cachedRepresentation;
+	TObjectPtr<UFGActorRepresentation> cachedRepresentation;
 	
 public:
 	//Begin FGActorRepresentationInterface
@@ -75,7 +75,7 @@ public:
 	virtual float GetActorFogOfWarRevealRadius() override;
 	virtual ECompassViewDistance GetActorCompassViewDistance() override;
 	virtual void SetActorCompassViewDistance(ECompassViewDistance compassViewDistance) override;
-	virtual TArray< FLocalUserNetIdBundle > GetLastEditedBy() const override;
-	virtual void SetActorLastEditedBy(const TArray< FLocalUserNetIdBundle >& LastEditedBy) override;
+	virtual FPlayerInfoHandle GetLastEditedBy() const override;
+	virtual void SetActorLastEditedByHandle(const FPlayerInfoHandle& playerInfoHandle) override;
 	//End FGActorRepresentationInterface
 };

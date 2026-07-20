@@ -32,7 +32,7 @@ int AAVRPMegaprojectSubsystemBase::GetCurrentPhase()
 {
 	int phasesUnlocked = 0;
 	for (auto phase : megaprojectPhases) {
-		if (AFGSchematicManager::Get(this)->IsSchematicPurchased(phase.schematic)) {
+		if (IsValid(phase.schematic) && AFGSchematicManager::Get(this)->IsSchematicPurchased(phase.schematic)) {
 			phasesUnlocked++;
 		}
 	}
@@ -72,7 +72,7 @@ EDataValidationResult AAVRPMegaprojectSubsystemBase::IsDataValid(FDataValidation
 
 	auto schematics = TArray<TSubclassOf<UFGSchematic>>();
 	for (auto phase : megaprojectPhases) {
-		if (!IsValid(phase.schematic) || schematics.Contains(phase.schematic)) {
+		if (IsValid(phase.schematic) && schematics.Contains(phase.schematic)) {
 			validationContext.AddError(FText::FromString(TEXT("Invalid schematic found in Megaproject phases. Should not be null or have duplicates.")));
 			ValidationResult = EDataValidationResult::Invalid;
 			return ValidationResult;

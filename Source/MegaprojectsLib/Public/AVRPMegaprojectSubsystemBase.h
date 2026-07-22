@@ -93,7 +93,7 @@ public:
 	FOnMegaprojectPhaseChanged OnMegaprojectPhaseChanged;
 
 	//Megaproject phases, as in the amount of states building can be in. When initiated, schematic at index 0 automatically unlocks, its cost doesn't matter.
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Megaproject")
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Replicated,  Category = "Megaproject")
 	TArray<FAVRPMegaprojectPhase> megaprojectPhases;
 
 	//Location of the Megaproject's initializer

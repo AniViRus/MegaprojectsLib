@@ -31,9 +31,11 @@ void AAVRPMegaprojectSubsystemBase::EndPlay(const EEndPlayReason::Type endPlayRe
 int AAVRPMegaprojectSubsystemBase::GetCurrentPhase()
 {
 	int phasesUnlocked = 0;
+	if (mCurrentInitiationStage == EMegaprojectInitiationStage::MIS_Initiated) {
 	for (auto phase : megaprojectPhases) {
 		if (IsValid(phase.schematic) && AFGSchematicManager::Get(this)->IsSchematicPurchased(phase.schematic)) {
 			phasesUnlocked++;
+			}
 		}
 	}
 	return phasesUnlocked;
@@ -46,18 +48,18 @@ int AAVRPMegaprojectSubsystemBase::GetCurrentLevel()
 
 TSubclassOf<UFGSchematic> AAVRPMegaprojectSubsystemBase::GetCurrentSchematic()
 {
-	if (IsFinished()) return nullptr;
+	if (IsFinished() || mCurrentInitiationStage != EMegaprojectInitiationStage::MIS_Initiated) return nullptr;
 	return megaprojectPhases[GetCurrentPhase()].schematic;
 }
 
 bool AAVRPMegaprojectSubsystemBase::IsFinished()
 {
-	return GetCurrentPhase() >= megaprojectPhases.Num();
+	return mCurrentInitiationStage == EMegaprojectInitiationStage::MIS_Initiated && GetCurrentPhase() >= megaprojectPhases.Num();
 }
 
 void AAVRPMegaprojectSubsystemBase::HandleSchematicPurchased(TSubclassOf<UFGSchematic> schematic)
 {
-	if (!HasAuthority()) return;
+	if (!HasAuthority() || mCurrentInitiationStage != EMegaprojectInitiationStage::MIS_Initiated) return;
 	for (auto phase : megaprojectPhases) {
 		if (phase.schematic == schematic) {
 			OnMegaprojectPhaseChanged.Broadcast(GetCurrentLevel());

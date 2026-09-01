@@ -65,5 +65,6 @@ AAVRPMegaprojectSubsystemBase* UAVRPBPFL_MegaprojectsLib::GetSubsystemOf(AFGBuil
 
 void UAVRPBPFL_MegaprojectsLib::ExecutePlayBuildEffects(AFGBuildable* buildable)
 {
-	buildable->ExecutePlayBuildEffects();
+	buildable->SetBuildEffectInstigator(buildable);
+	buildable->PlayLegacyBuildEffect();
 }
